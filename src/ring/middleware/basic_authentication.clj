@@ -109,7 +109,7 @@
              cred (and auth (decode-base64 (last (re-find #"^Basic (.*)$" auth))))
              [user pass] (and cred (s/split (str cred) #":"))]
          (if-let [token (and cred (authenticate (str user) (str pass)))]
-           (app (assoc req :basic-authentication token))
+           (app (assoc req :basic-authentication token :authenticated-user user))
            (assoc (merge {:headers {"Content-Type" "text/plain"}
                           :body "access denied"}
                          denied-response)
